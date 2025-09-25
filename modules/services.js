@@ -1,46 +1,54 @@
-const mongoose = require('mongoose');
-
-import { connectDB } from './connection.js';
 import { product } from '../modules/documents.js'; 
-import { mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 
 export class MongoService {
-    constructor(Model) {
-        this.Model = Model;
+
+    constructor(model) {
+        this.Model = model;
     }
 
-    
-    async postDocument(dataObject, customId = null) {
+    // async function to create a new document in the collection
+    async postDocument(dataObject, customId) {
         try {
             const docData = customId ? { _id: customId, ...dataObject } : dataObject;
             const newDoc = new this.Model(docData);
             const savedDoc = await newDoc.save();
-            console.log("Documento creado con ID:", savedDoc._id);
+            console.log("Created document with ID:", savedDoc._id);
             return savedDoc;
         } catch (error) {
-            console.error("Error al crear el documento:", error);
-            throw new Error(`Error creando documento: ${error.message}`);
+            console.error("ERROR creating the document:", error);
+            throw new Error(`ERROR creating the document: ${error.message}`);
         }
     }
 
-
+    // async function to recover all documents from the collection
     async getAllDocuments() {
         try {
             return await this.Model.find({});
         } catch (error) {
-            throw new Error(`Error obteniendo documentos: ${error.message}`);
+            throw new Error(`ERROR getting documents: ${error.message}`);
         }
     }
 
+    // async function to recover a document by its ID
     async getDocumentById(id) {
         try {
             return await this.Model.findById(id);
         } catch (error) {
-            throw new Error(`Error obteniendo documento: ${error.message}`);
+            throw new Error(`ERROR getting documento: ${error.message}`);
         }
     }
 
-    // Métodos adicionales útiles
+    // async function to recover documents by category
+    async getDocumentsByCategory(category) {
+        try {
+            return await this.Model.find({ category: category });
+        } catch (error) {
+            throw new Error(`ERROR getting documents by category: ${error.message}`);
+        }                   
+    }
+
+    // async function to update a document by its ID
     async updateDocument(id, updateData) {
         try {
             return await this.Model.findByIdAndUpdate(id, updateData, { new: true });
@@ -49,11 +57,12 @@ export class MongoService {
         }
     }
 
+    // async function to delete a document by its ID
     async deleteDocument(id) {
         try {
             return await this.Model.findByIdAndDelete(id);
         } catch (error) {
-            throw new Error(`Error eliminando documento: ${error.message}`);
+            throw new Error(`ERROR deleting document: ${error.message}`);
         }
     }
 }

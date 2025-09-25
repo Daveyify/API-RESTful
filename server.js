@@ -1,12 +1,17 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import { MongoService } from './modules/services.js';   
+import { connectDB } from './modules/connection.js';
 
 const app = express();
 
 const PORT = 3000;
 
-// Upload products to the database
-app.post('/products', async (req, res) => {
+// connect to MongoDB
+await connectDB();
+
+// upload products to the database
+app.post('/postProducts', async (req, res) => {
     try {
         const productData = req.body;
     } catch (error) {
