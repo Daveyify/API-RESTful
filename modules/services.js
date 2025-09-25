@@ -1,4 +1,4 @@
-import { product } from '../modules/documents.js'; 
+import { Product } from './documents.js'; // Named import
 import mongoose from 'mongoose';
 
 export class MongoService {

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const uri = 'mongodb+srv://daveyify:23062004@cluster0.quaqidc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
@@ -13,6 +13,4 @@ async function connectDB() {
     }
 }
 
-connectDB();
-
-
+export { connectDB };
