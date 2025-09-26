@@ -105,7 +105,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const result = await productService.deleteDocument(req.params.id);  
-        res.status(204).json({
+        res.status(200).json({
             message: 'Product deleted successfully',
             product: result
         });

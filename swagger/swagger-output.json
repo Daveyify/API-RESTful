@@ -161,7 +161,7 @@
           { "name": "id", "in": "path", "required": true, "type": "string" }
         ],
         "responses": {
-          "204": { "description": "Product deleted successfully" },
+          "200": { "description": "Product deleted successfully" },
           "500": { "description": "Internal Server Error" }
         }
       }
