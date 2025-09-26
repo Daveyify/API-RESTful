@@ -1,4 +1,4 @@
-import { Product } from './documents.js'; // Named import
+import { Product } from './documents.js';
 import mongoose from 'mongoose';
 
 export class MongoService {
@@ -21,10 +21,24 @@ export class MongoService {
         }
     }
 
-    // async function to recover all documents from the collection
-    async getAllDocuments() {
+    // async function to recover documents with filters and pagination
+    async getDocuments(filters = {}, page, limit) {
         try {
-            return await this.Model.find({});
+
+            page = parseInt(page) || 1;
+            limit = parseInt(limit) || 10;
+
+            const documents = await this.Model.find(filters)
+                .skip((page - 1) * limit)
+                .limit(limit);
+
+            const total = await this.Model.countDocuments(filters);
+
+            return {
+                total,
+                page: Number(page),
+                documents
+            };
         } catch (error) {
             throw new Error(`ERROR getting documents: ${error.message}`);
         }
@@ -37,15 +51,6 @@ export class MongoService {
         } catch (error) {
             throw new Error(`ERROR getting documento: ${error.message}`);
         }
-    }
-
-    // async function to recover documents by category
-    async getDocumentsByCategory(category) {
-        try {
-            return await this.Model.find({ category: category });
-        } catch (error) {
-            throw new Error(`ERROR getting documents by category: ${error.message}`);
-        }                   
     }
 
     // async function to update a document by its ID

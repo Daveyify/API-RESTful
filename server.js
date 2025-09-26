@@ -34,14 +34,30 @@ app.post('/postProducts', async (req, res) => {
     }
 });
 
-// READ all products
-app.get('/getAllProducts', async (req, res) => {
+// READ all products with pagination and filtering
+app.get('/getProducts', async (req, res) => {
     try {
+        let { page, limit, category, availability, price } = req.query;
+
+        const filters = {};
+
+        if (category){
+            filters.category = category;
+        }
+        if(availability !== undefined )
+        {
+            filters.availability = availability === 'true';
+        }
+        if (price){
+            filters.price = Number(price);
+        }   
+
+        const result = await productService.getDocuments(filters, page, limit);
+
         if (result.length === 0) {
             res.status(404).send("Data not found.");
         }
         else {
-            const result = await productService.getAllDocuments();
             res.status(200).json(
                 {
                     message: 'All products readed successfully',
@@ -56,16 +72,18 @@ app.get('/getAllProducts', async (req, res) => {
 });
 
 // READ the product by id
-app.get('/getProducts/:id', async (req, res) => {
+app.get('/getProductsID/:id', async (req, res) => {
     try {
+
+        const result = await productService.getDocumentById(req.params.id);
+
         if (result.length === 0) {
             res.status(404).send("Data not found.");
         }
         else {
-            const result = await productService.getAllDocuments();
             res.status(200).json(
                 {
-                    message: 'All products readed successfully',
+                    message: 'Product readed successfully',
                     product: result
                 }
             );
@@ -76,6 +94,34 @@ app.get('/getProducts/:id', async (req, res) => {
     }
 });
 
+// UPDATE the product by id
+app.put('/updateProducts/:id', async (req, res) => {
+    try {
+        const updateData = req.body;
+        const result = await productService.updateDocument(req.params.id, updateData);  
+        res.status(200).json({
+            message: 'Product updated successfully',
+            product: result
+        });
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ error: 'Error updating product' });
+    }           
+});
+
+//
+app.delete('/deleteProducts/:id', async (req, res) => {
+    try {
+        const result = await productService.deleteDocument(req.params.id);  
+        res.status(200).json({
+            message: 'Product deleted successfully',
+            product: result
+        });
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({ error: 'Error deleting product' });
+    }      
+});
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
