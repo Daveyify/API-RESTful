@@ -10,10 +10,9 @@ app.use(express.json());
 // connect to MongoDB
 await connectDB();
 
-// import and use product routes
 app.use('/products', productRoutes);
 
 
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });

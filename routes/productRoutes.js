@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
         const customId = req.body.id || null;
 
         const result = await productService.postDocument(dataObject, customId);
-        res.status(200).json({
+        res.status(201).json({
             message: 'Product created successfully',
             product: result
         });
@@ -62,6 +62,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+// READ a product by its ID
 router.get('/:id', async (req, res) => {
     try {
 
@@ -84,6 +85,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// UPDATE a product by its ID
 router.put('/:id', async (req, res) => {
     try {
         const updateData = req.body;
@@ -98,10 +100,12 @@ router.put('/:id', async (req, res) => {
     }           
 });
 
+// DELETE a product by its ID
+
 router.delete('/:id', async (req, res) => {
     try {
         const result = await productService.deleteDocument(req.params.id);  
-        res.status(200).json({
+        res.status(204).json({
             message: 'Product deleted successfully',
             product: result
         });

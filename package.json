@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Daveyify",
   "license": "ISC",
-  "description": "",
+  "description": "An API for managing products using Node.js, Express, and MongoDB.",
   "dependencies": {
     "express": "^5.1.0",
     "mongoose": "^8.18.2"
