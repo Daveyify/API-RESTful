@@ -1,0 +1,170 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Product API",
+    "description": "An API RESTful for managing products using Node.js, Express, and MongoDB. It supports CRUD operations, filtering, and pagination. Built with best practices in mind. \nAuthor: Daveyify. \n- Github repository: https://github.com/Daveyify/API-RESTful.git ",
+    
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/products/": {
+      "post": {
+        "description": "create a new product",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": { "example": "PRODUCT_005" },
+                "name": { "example": "Sample Product" },
+                "description": { "example": "This is a sample product description." },
+                "category": { "example": "Electronics" },
+                "price": { "example": 9999 },
+                "availability": { "example": true }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "examples": {
+              "application/json": {
+                "message": "Product created successfully",
+                "product": {
+                  "id": "PRODUCT_005",
+                  "name": "Sample Product",
+                  "description": "This is a sample product description.",
+                  "category": "Electronics",
+                  "price": 9999,
+                  "availability": true,
+                  "_id": "64b8f0f2f1c2b3a4d5e6f7g8",
+                  "__v": 0
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "examples": {
+              "application/json": {
+                "message": "Error creating product",
+                "error": "Detailed error message"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get all products with optional filters and pagination",
+        "parameters": [
+          { "name": "page", "in": "query", "type": "number" },
+          { "name": "limit", "in": "query", "type": "number" },
+          { "name": "category", "in": "query", "type": "string" },
+          { "name": "availability", "in": "query", "type": "boolean" },
+          { "name": "price", "in": "query", "type": "number" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Products read successfully",
+            "examples": {
+              "application/json": {
+                "page": 1,
+                "limit": 10,
+                "totalPages": 1,
+                "totalDocuments": 2,
+                "products": [
+                  {
+                    "id": "PRODUCT_001",
+                    "name": "Laptop",
+                    "description": "A high-performance laptop.",
+                    "category": "Electronics",
+                    "price": 1200,
+                    "availability": true,
+                    "_id": "64b8eec4f1c2b3a4",
+                    "__v": 0,
+                    "createdAt": "2023-07-20T12:34:56.789Z",
+                    "updatedAt": "2023-07-20T12:34:56.789Z"
+                  }
+                ]
+              }
+            }
+          },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "description": "Get product by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product read successfully",
+            "examples": {
+              "application/json": {
+                "id": "PRODUCT_001",
+                "name": "Laptop",
+                "description": "A high-performance laptop.",
+                "category": "Electronics",
+                "price": 1200,
+                "availability": true,
+                "__v": 0,
+                "createdAt": "2023-07-20T12:34:56.789Z",
+                "updatedAt": "2023-07-20T12:34:56.789Z"
+              }
+            }
+          },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "description": "Update product by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product updated successfully",
+            "examples": {
+              "application/json": {
+                "message": "Product updated successfully",
+                "product": {
+                  "id": "PRODUCT_008",
+                  "name": "Laptop",
+                  "description": "A high-performance laptop.",
+                  "category": "Electronics",
+                  "price": 1200,
+                  "availability": true,
+                  "__v": 0,
+                  "createdAt": "2023-07-20T12:34:56.789Z",
+                  "updatedAt": "2023-07-20T12:34:56.789Z"
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "description": "Delete product by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "204": { "description": "Product deleted successfully" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  }
+}
