@@ -9,7 +9,7 @@ app.use(express.json());
 
 
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './swagger-output.json' with { type: 'json' };
+import swaggerDocument from './swagger/swagger-output.json' with { type: 'json' };
 
 // connect to MongoDB
 await connectDB();
