@@ -1,6 +1,3 @@
-import { Product } from './documents.js';
-import mongoose from 'mongoose';
-
 export class MongoService {
 
     constructor(model) {
