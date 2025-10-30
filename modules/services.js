@@ -4,7 +4,6 @@ export class MongoService {
         this.Model = model;
     }
 
-    // function to create a new document in the collection
     async postDocument(dataObject, customId) {
         try {
             const docData = customId ? { _id: customId, ...dataObject } : dataObject;
@@ -18,15 +17,16 @@ export class MongoService {
         }
     }
 
-    // function to recover documents with filters and pagination
+    // recover documents with filters and pagination
     async getDocuments(filters = {}, page, limit) {
         try {
 
             page = parseInt(page) || 1;
             limit = parseInt(limit) || 10;
+            offset = (page - 1) * limit;
 
             const documents = await this.Model.find(filters)
-                .skip((page - 1) * limit)
+                .skip(offset)
                 .limit(limit);
 
             const total = await this.Model.countDocuments(filters);
@@ -41,7 +41,6 @@ export class MongoService {
         }
     }
 
-    // function to recover a document by its ID
     async getDocumentById(id) {
         try {
             return await this.Model.findById(id);
@@ -50,7 +49,6 @@ export class MongoService {
         }
     }
 
-    // function to update a document by its ID
     async updateDocument(id, updateData) {
         try {
             return await this.Model.findByIdAndUpdate(id, updateData, { new: true });
@@ -59,7 +57,6 @@ export class MongoService {
         }
     }
 
-    // function to delete a document by its ID
     async deleteDocument(id) {
         try {
             return await this.Model.findByIdAndDelete(id);
